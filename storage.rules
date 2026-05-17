@@ -1,0 +1,30 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Photos offres (publiques en lecture)
+    match /offers/{offerId}/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth.token.role in ['admin', 'agent'];
+    }
+
+    // Documents utilisateurs (factures, vouchers)
+    match /users/{userId}/{allPaths=**} {
+      allow read: if request.auth.uid == userId
+                  || request.auth.token.role in ['admin', 'agent'];
+      allow write: if request.auth.token.role in ['admin', 'agent'];
+    }
+
+    // Avatars
+    match /avatars/{userId}/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth.uid == userId;
+    }
+
+    // Images blog et destinations
+    match /content/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth.token.role in ['admin', 'agent'];
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "voyages-dz-prod",
+    "staging": "voyages-dz-staging"
+  }
+}
